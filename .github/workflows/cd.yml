@@ -1,0 +1,31 @@
+name: CD - Deploy Online Store
+
+on:
+  push:
+    branches:
+      - main # Workflow läuft bei jedem Push auf main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Build Docker image
+        run: docker build -t dominikmusewitsch/online-store:latest .
+
+      - name: Push Docker image to Docker Hub
+        run: docker push dominikmusewitsch/online-store:latest
