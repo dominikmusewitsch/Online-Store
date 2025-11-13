@@ -14,4 +14,4 @@ jobs:
       - name: Install
         run: npm ci
       - name: Run tests
-        run: npm test --silent
+        run: npm test
